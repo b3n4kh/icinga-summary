@@ -5,7 +5,7 @@ Icinga Summary
 """
 import tableformatter as tf
 from tableformatter import generate_table, FancyGrid, Column
-import api
+from icinga2ve.api import get_object
 
 
 columns = (Column('Check', attrib='check'),
@@ -50,11 +50,11 @@ def status_color(row_obj: IcingaStatus) -> dict:
     return opts
 
 
-services = api.get_status('services')
-rows = []
+def main(host: str, basicauth: bool):
+    services = get_object(object='services', basicauth=basicauth, host=host)
+    rows = []
 
-for service, data in services.items():
-    rows.append(IcingaStatus(service, data['state'], data['output']))
+    for service, data in services.items():
+        rows.append(IcingaStatus(service, data['state'], data['output']))
 
-
-print(generate_table(rows, columns, grid_style=FancyGrid(), row_tagger=status_color))
+    print(generate_table(rows, columns, grid_style=FancyGrid(), row_tagger=status_color))
