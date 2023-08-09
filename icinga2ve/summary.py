@@ -45,16 +45,13 @@ class IcingaStatus(object):
 
 def status_color(row_obj: IcingaStatus) -> dict:
     """Color rows."""
-    opts = dict()
-    opts[tf.TableFormatter.ROW_OPT_TEXT_COLOR] = row_obj.get_color()
-    return opts
+    return {tf.TableFormatter.ROW_OPT_TEXT_COLOR: row_obj.get_color()}
 
 
 def main(host: str, basicauth: bool):
     services = get_object(object='services', basicauth=basicauth, host=host)
-    rows = []
-
-    for service, data in services.items():
-        rows.append(IcingaStatus(service, data['state'], data['output']))
-
+    rows = [
+        IcingaStatus(service, data['state'], data['output'])
+        for service, data in services.items()
+    ]
     print(generate_table(rows, columns, grid_style=FancyGrid(), row_tagger=status_color))
