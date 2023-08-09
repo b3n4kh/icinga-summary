@@ -11,10 +11,10 @@ API_AUTH = ('root', 'icinga')
 def get_object(object: str, basicauth: bool, host: str):
     API_URI = "https://{0}:5665/v1".format(host)
     if basicauth:
-        r = requests.get(API_URI + '/objects/' + object, auth=API_AUTH)
+        r = requests.get(f'{API_URI}/objects/{object}', auth=API_AUTH)
     else:
         API_CERT = ("/var/lib/icinga2/certs/{0}.crt".format(host), "/var/lib/icinga2/certs/{0}.key".format(host))
-        r = requests.get(API_URI + '/objects/' + object, cert=API_CERT)
+        r = requests.get(f'{API_URI}/objects/{object}', cert=API_CERT)
     result_json = r.json()['results']
     return_dict = {}
     for result in result_json:

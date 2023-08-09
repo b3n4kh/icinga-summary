@@ -19,7 +19,7 @@ def cli(ctx, debug, basicauth, host):
 @click.pass_context
 def api(ctx):
     """Raw API Mode."""
-    click.echo('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
+    click.echo(f"Debug is {ctx.obj['DEBUG'] and 'on' or 'off'}")
 
 
 if __name__ == '__main__':
